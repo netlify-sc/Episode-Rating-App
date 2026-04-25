@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CommentContext = createContext();
 
@@ -34,8 +34,21 @@ const CommentProvider = ({ children }) => {
 
     }
 
+    const deleteComment = (episodeId, commentId) => {
+        const filteredComments = comments[episodeId].filter(comment => comment.commentID !== commentId);
+        setComments(prev => {
+            return ({
+                ...prev, [episodeId]: filteredComments
+            })}
+        )
+    }
+
+    useEffect(()=> {
+            localStorage.setItem("comments", JSON.stringify(comments));
+        }, [comments])
+
     return (
-        <CommentContext value={{comments, addComment}}>
+        <CommentContext value={{comments, addComment, deleteComment}}>
             {children}
         </CommentContext>
     )
