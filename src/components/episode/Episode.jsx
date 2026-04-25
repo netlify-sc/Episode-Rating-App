@@ -10,6 +10,7 @@ import { useRating } from "../../context/RatingProvider";
 import { Box, Collapsible, Stack } from "@chakra-ui/react"
 import { GoComment } from "react-icons/go";
 import { useComment } from "../../context/CommentProvider";
+import Comment from "../Comment/Comment";
 
 const Episode = ({ id, name, airDate, episode }) => {
     const [openModal, setOpenModal] = useState(false);
@@ -18,11 +19,11 @@ const Episode = ({ id, name, airDate, episode }) => {
 
     const [newComment, setNewComment] = useState("");
 
+    const [showCommentSection, setShowCommentSection] = useState(false);
 
+
+    
     const {addComment, comments} = useComment();
-
-
-
     const { ratings, addRating } = useRating();
 
 
@@ -130,21 +131,26 @@ const Episode = ({ id, name, airDate, episode }) => {
                     {/* {end of modal} */}
 
                     <Separator orientation="vertical" height="6" />
-                    <Button onClick={ () => {}} variant={"outline"} padding="2" colorPalette={"blue"}><GoComment /> {getNumberOfComments(id)}</Button>
+                    <Button onClick={ () => setShowCommentSection(!showCommentSection)} variant={"outline"} padding="2" colorPalette={"blue"}><GoComment /> {getNumberOfComments(id)}</Button>
                     <Button onClick={()=> setOpenComment(!openComment)} variant={"outline"} padding="2" colorPalette={"blue"}> Comment</Button>
 
 
                 </Card.Footer>
+                {/* Add Comment collapsible section */}
                 <Collapsible.Root marginTop={"10px"} open={openComment} onOpenChange={(e) => setOpenComment(e.open)}>
-                    
-
                     <Collapsible.Content>
-                        {/* <Box padding="4" borderWidth="1px">
-                            This collapsible is controlled by external state. You can open and
-                            close it using the buttons above or by clicking the trigger.
-                        </Box> */}
                         <textarea value={newComment} onChange={(e)=> setNewComment(e.target.value)} className={classes.comment}></textarea>
                         <Button size={"sm"} marginTop={"10px"} marginLeft={"15px"} onClick={() => onSubmitComment(id, newComment)} variant={"outline"} padding="2" colorPalette={"blue"}><GoComment /> Comment</Button>
+                    </Collapsible.Content>
+                </Collapsible.Root>
+                
+                {/* Show Comment section */}
+                <Collapsible.Root marginTop={"10px"} open={showCommentSection} onOpenChange={(e) => setShowCommentSection(e.open)}>
+                    <Collapsible.Content>
+                        <Box padding="4" borderWidth="1px" borderRadius={"5px"} width={"95%"} margin={"0 auto"} backgroundColor={"#e7e7e9"}>
+                            { (!comments[id]) ?  "No Comments" : comments[id].map(comment=> <Comment episodeId={id} commentId={comment.commentID} comment={comment.comment} commentDate={comment.date}/>)                           }
+                        </Box>
+                        
                     </Collapsible.Content>
                 </Collapsible.Root>
             </Card.Root>
