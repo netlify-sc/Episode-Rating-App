@@ -7,7 +7,7 @@ const ControlBar = ( ) => {
 
     return (
         <>
-            <Button margin={"20px"} onClick={resetRatings} variant={"outline"} padding="2" colorPalette={"blue"} width={"100px"}>Reset</Button>
+            <Button margin={"20px"} onClick={resetRatings} variant={"outline"} padding="2" colorPalette={"red"} width={"100px"}>Reset Ratings</Button>
         </>
     )
 }

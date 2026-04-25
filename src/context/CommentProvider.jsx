@@ -3,13 +3,19 @@ import { createContext, useContext, useState, useEffect } from "react";
 const CommentContext = createContext();
 
 const CommentProvider = ({ children }) => {
-    const [comments, setComments] = useState({
-        // episodeId: [{
-        // commentID: crypto.genuuid,
-        // comment: ......,
-        // date: timeStamp or MM-dd-yyyy
-        //}]
-    })
+    const [comments, setComments] = useState(() => {
+        if (localStorage.getItem("comments")){
+            return JSON.parse(localStorage.getItem("comments"));
+        } else {
+            return {
+                // episodeId: [{
+                // commentID: crypto.genuuid,
+                // comment: ......,
+                // date: timeStamp or MM-dd-yyyy
+                //}]
+            }
+        }
+    });
 
     const addComment = (episodeId, newComment) => {
         const postDate = new Date();
@@ -26,9 +32,9 @@ const CommentProvider = ({ children }) => {
             date: created
         }]
 
-        setComments(prev=> {
+        setComments(prev => {
             return (
-                {...prev, [episodeId]: addedComment}
+                { ...prev, [episodeId]: addedComment }
             )
         })
 
@@ -39,16 +45,17 @@ const CommentProvider = ({ children }) => {
         setComments(prev => {
             return ({
                 ...prev, [episodeId]: filteredComments
-            })}
+            })
+        }
         )
     }
 
-    useEffect(()=> {
-            localStorage.setItem("comments", JSON.stringify(comments));
-        }, [comments])
+    useEffect(() => {
+        localStorage.setItem("comments", JSON.stringify(comments));
+    }, [comments])
 
     return (
-        <CommentContext value={{comments, addComment, deleteComment}}>
+        <CommentContext value={{ comments, addComment, deleteComment }}>
             {children}
         </CommentContext>
     )
