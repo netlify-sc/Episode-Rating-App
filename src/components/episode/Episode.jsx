@@ -16,10 +16,10 @@ const Episode = ({ id, name, airDate, episode }) => {
     const [newRating, setNewRating] = useState(0);
     const [openComment, setOpenComment] = useState(false);
 
-    const [comment, setComment] = useState("");
+    const [newComment, setNewComment] = useState("");
 
 
-    const {addComment} = useComment();
+    const {addComment, comments} = useComment();
 
 
 
@@ -46,8 +46,14 @@ const Episode = ({ id, name, airDate, episode }) => {
 
     const onSubmitComment = (episodeId, newComment) => {
         addComment(episodeId, newComment);
-        setComment("");
+        setNewComment("");
         setOpenComment(false)
+    }
+
+    const getNumberOfComments = (episodeId) => {
+        const num = comments[episodeId] ? comments[episodeId].length : 0;
+        return num;
+
     }
 
     return (
@@ -124,7 +130,8 @@ const Episode = ({ id, name, airDate, episode }) => {
                     {/* {end of modal} */}
 
                     <Separator orientation="vertical" height="6" />
-                    <Button onClick={()=> setOpenComment(!openComment)} variant={"outline"} padding="2" colorPalette={"blue"}><GoComment /> Comment</Button>
+                    <Button onClick={ () => {}} variant={"outline"} padding="2" colorPalette={"blue"}><GoComment /> {getNumberOfComments(id)}</Button>
+                    <Button onClick={()=> setOpenComment(!openComment)} variant={"outline"} padding="2" colorPalette={"blue"}> Comment</Button>
 
 
                 </Card.Footer>
@@ -136,8 +143,8 @@ const Episode = ({ id, name, airDate, episode }) => {
                             This collapsible is controlled by external state. You can open and
                             close it using the buttons above or by clicking the trigger.
                         </Box> */}
-                        <textarea value={comment} onChange={(e)=> setComment(e.target.value)} className={classes.comment}></textarea>
-                        <Button size={"sm"} marginTop={"10px"} marginLeft={"15px"} onClick={() => onSubmitComment(id, comment)} variant={"outline"} padding="2" colorPalette={"blue"}><GoComment /> Comment</Button>
+                        <textarea value={newComment} onChange={(e)=> setNewComment(e.target.value)} className={classes.comment}></textarea>
+                        <Button size={"sm"} marginTop={"10px"} marginLeft={"15px"} onClick={() => onSubmitComment(id, newComment)} variant={"outline"} padding="2" colorPalette={"blue"}><GoComment /> Comment</Button>
                     </Collapsible.Content>
                 </Collapsible.Root>
             </Card.Root>

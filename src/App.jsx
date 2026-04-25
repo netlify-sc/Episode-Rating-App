@@ -13,7 +13,7 @@ function App() {
   const getEpisodes = async () => {
     try {
 
-      const response1 = await fetch("https://rickandmortyapi.com/api/episode?page=1");
+      const response1 = await fetch("https://rickandmortyapi.com/api/episode"); //?page=1
       const response2 = await fetch("https://rickandmortyapi.com/api/episode?page=2");
       const response3 = await fetch("https://rickandmortyapi.com/api/episode?page=3");
 
